@@ -1,6 +1,6 @@
 resource "aws_security_group" "ingress-ssh" {
-  name   = "lab-02-allow-ssh-sg"
-  vpc_id = aws_vpc.lab02-vpc.id
+  name   = "allow-ssh-sg"
+  vpc_id = aws_vpc.vpc.id
 
   ingress {
     cidr_blocks = [
@@ -20,9 +20,9 @@ resource "aws_security_group" "ingress-ssh" {
   }
 }
 
-resource "aws_security_group" "ingress-http" {
-  name   = "lab-02-allow-http-sg"
-  vpc_id = aws_vpc.lab02-vpc.id
+resource "aws_security_group" "ingress_http" {
+  name   = "allow-http-sg"
+  vpc_id = aws_vpc.vpc.id
 
   ingress {
     cidr_blocks = [
@@ -42,9 +42,9 @@ resource "aws_security_group" "ingress-http" {
   }
 }
 
-resource "aws_security_group" "allow-all-traffic" {
-  name   = "lab-02-allow-all-traffic"
-  vpc_id = aws_vpc.lab02-vpc.id
+resource "aws_security_group" "allow_all_traffic" {
+  name   = "allow_all_traffic"
+  vpc_id = aws_vpc.vpc.id
 
   ingress {
     from_port        = 0

@@ -57,7 +57,7 @@ resource "aws_security_group" "ingress-ssh-test" {
   }
 }
 
-resource "aws_security_group" "ingress-http-test" {
+resource "aws_security_group" "ingress_http-test" {
   name   = "allow-http-sg"
   vpc_id = aws_vpc.lab01-vpc.id
 
@@ -102,7 +102,7 @@ resource "aws_spot_instance_request" "app_server" {
   instance_type               = "t2.micro"
   key_name                    = "home"
   subnet_id                   = aws_subnet.lab01-subnet.id
-  security_groups             = ["${aws_security_group.ingress-ssh-test.id}", "${aws_security_group.ingress-http-test.id}"]
+  security_groups             = ["${aws_security_group.ingress-ssh-test.id}", "${aws_security_group.ingress_http-test.id}"]
   associate_public_ip_address = true
 
   user_data = file("${path.module}/user-data.sh")

@@ -1,31 +1,31 @@
-resource "aws_lb" "lab02-alb" {
-  name               = "lab02-alb"
+resource "aws_lb" "alb" {
+  name               = "alb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.ingress-http.id]
-  subnets            = [aws_subnet.lab02-subnet-public-1a.id, aws_subnet.lab02-subnet-private-1b.id]
+  security_groups    = [aws_security_group.ingress_http.id]
+  subnets            = [aws_subnet.subnet_public_1a.id, aws_subnet.subnet_private_1b.id]
 }
 
-resource "aws_lb_target_group" "lab-02-alb-target-group" {
-  name     = "lab02-lb-tg"
+resource "aws_lb_target_group" "alb_target_group" {
+  name     = "lb-tg"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = aws_vpc.lab02-vpc.id
+  vpc_id   = aws_vpc.vpc.id
+  health_check {
+    enabled = true
+    path    = "/"
+    port    = "80"
+    matcher = "200"
+  }
 }
 
-resource "aws_lb_target_group_attachment" "lab-02-alb-target-group-attachment" {
-  target_group_arn = aws_lb_target_group.lab-02-alb-target-group.arn
-  target_id        = aws_instance.private-app-server.id
-  port             = 80
-}
-
-resource "aws_lb_listener" "lab02-lb-aws_lb_listener" {
-  load_balancer_arn = aws_lb.lab02-alb.arn
+resource "aws_lb_listener" "lb_listener" {
+  load_balancer_arn = aws_lb.alb.arn
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.lab-02-alb-target-group.arn
+    target_group_arn = aws_lb_target_group.alb_target_group.arn
   }
 }
